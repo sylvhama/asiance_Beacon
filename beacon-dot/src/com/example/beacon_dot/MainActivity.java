@@ -76,7 +76,7 @@ public class MainActivity extends Activity {
 		beaconManager = new BeaconManager(this);
 		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-    beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
+    beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(10), 0);
 		
 		if (!beaconManager.isBluetoothEnabled()) {
 			alertbox("Alert", "Please, activate your bluetooth");

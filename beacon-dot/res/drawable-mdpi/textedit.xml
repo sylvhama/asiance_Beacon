@@ -4,7 +4,7 @@
     <item><shape>
             <gradient android:angle="270" android:endColor="@color/textEditBackground" android:startColor="@color/textEditBackground" />
 
-            <stroke android:width="1dp" android:color="@color/NiceButtonBorderColor" />
+            
 
             <corners android:radius="4dp" />
 

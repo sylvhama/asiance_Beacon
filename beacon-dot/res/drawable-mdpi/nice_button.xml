@@ -12,7 +12,7 @@
                android:width="1dp"
                android:color="@color/NiceButtonBorderColor" />
             <corners
-               android:radius="4dp" />
+               android:radius="60dp" />
             <padding
                android:left="0dp"
                android:top="10dp"
@@ -31,7 +31,7 @@
                android:width="1dp"
                android:color="@color/NiceButtonBorderColor" />
             <corners
-               android:radius="3dp" />
+               android:radius="60dp" />
             <padding
                android:left="0dp"
                android:top="10dp"
@@ -50,7 +50,7 @@
                android:width="1dp"
                android:color="@color/NiceButtonBorderColor" />
             <corners
-               android:radius="3dp" />
+               android:radius="60dp" />
             <padding
                android:left="0dp"
                android:top="10dp"
@@ -69,7 +69,7 @@
                android:width="1dp"
                android:color="@color/NiceButtonBorderColor" />
             <corners
-               android:radius="3dp" />
+               android:radius="60dp" />
             <padding
                android:left="0dp"
                android:top="10dp"
