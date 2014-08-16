@@ -29,10 +29,11 @@ public class LoginActivity extends Activity {
                 username = usernameField.getText().toString();
                 
                 if(username.isEmpty()) {
-                	//create toast message for empty username
+                	//call toast message method to handle empty user name
                    toastMassage();
                 } else {
-                	Intent myIntent = new Intent(view.getContext(), MainActivity.class);
+                	// create intent to connect next activity
+                	Intent myIntent = new Intent(view.getContext(), StampActivity.class);
                     myIntent.putExtra("username", username);
                     startActivityForResult(myIntent, 0);
                 }
@@ -40,6 +41,7 @@ public class LoginActivity extends Activity {
         });
     }
     
+    //This method generates toast message when user click welcome button with empty name field
     public void toastMassage () {
     	Toast msg = Toast.makeText(this, "Please enter your name again", Toast.LENGTH_LONG);
     	msg.show();

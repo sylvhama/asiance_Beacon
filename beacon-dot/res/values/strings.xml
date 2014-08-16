@@ -7,6 +7,12 @@
     <string name="anniversary">20th ANNIVERSARY</string>
     <string name="enter_name">Enter your name here</string>
     <string name="empty_name">Please enter your name again</string>
-    
+    <string name="title_activity_stamp">StampActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_fact">FactActivity</string>
+    <string name="title_activity_rule">RuleActivity</string>
 
 </resources>
