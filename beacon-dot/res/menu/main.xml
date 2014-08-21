@@ -3,10 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.beacon_dot.MainActivity" >
 
-    <item
+<!--     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/> -->
+    
+    <item
+        android:id="@+id/action_stamp"
+        android:orderInCategory="101"
+        android:title="@string/action_stamp"
+        app:showAsAction="always" />
+    
+    <item
+        android:id="@+id/action_rule"
+        android:orderInCategory="102"
+        android:title="@string/action_rule"
+        app:showAsAction="always" />
 
 </menu>

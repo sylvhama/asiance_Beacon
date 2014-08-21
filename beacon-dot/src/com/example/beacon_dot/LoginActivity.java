@@ -2,9 +2,12 @@ package com.example.beacon_dot;
 
 
 
+import com.example.beacon_dot.*;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,37 +16,49 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
  
-	private String username = null;
+	public final static String EXTRA_NAME = "com.example.beacon_dot.NAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
                 
+     // activity_login.xml - EditText - id : imputName
         final EditText usernameField = (EditText) findViewById(R.id.inputName);
         
-
         Button startButton = (Button) findViewById(R.id.button1);
+        
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                username = usernameField.getText().toString();
+                String username = usernameField.getText().toString();
                 
                 if(username.isEmpty()) {
-                	//call toast message method to handle empty user name
+                	//create toast message for empty username
                    toastMassage();
                 } else {
-                	// create intent to connect next activity
-                	Intent myIntent = new Intent(view.getContext(), StampActivity.class);
-                    myIntent.putExtra("username", username);
-                    startActivityForResult(myIntent, 0);
+                	//send user input name to stamp activity
+                	sendName(view, username);
                 }
-            }
+            }			
         });
     }
     
-    //This method generates toast message when user click welcome button with empty name field
     public void toastMassage () {
     	Toast msg = Toast.makeText(this, "Please enter your name again", Toast.LENGTH_LONG);
     	msg.show();
     }
+    
+    /*private void sendName(View view) {
+		Intent myIntent = new Intent(view.getContext(), StampActivity.class);
+		myIntent.putExtra("username", username);
+		startActivity(myIntent);
+	}*/
+    
+    public void sendName(View view, String username) {
+		Intent intent = new Intent(this, StampNewActivity.class);
+		intent.putExtra(EXTRA_NAME, username);
+		startActivity(intent);
+		LoginActivity.this.finish();
+		
+	}
 } 

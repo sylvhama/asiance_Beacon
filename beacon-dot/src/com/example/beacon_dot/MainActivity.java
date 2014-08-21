@@ -30,7 +30,7 @@ import com.estimote.sdk.Utils;
 
 public class MainActivity extends Activity {
 	private String userID = "Your Name";
-
+	
 	//List<Item> itemList;
 	//DBActivity dbApp;
 	//ArrayAdapter<Item> lvArrayAdapter;
@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
 	protected static final String TAG = "EstimoteiBeacon";
 
 	private static final int NOTIFICATION_ID = 123;
-
+	
 	public int flagRegion = 0;
 
 	BeaconManager beaconManager;
@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
 	 *
 	 * @param savedInstanceState
 	 */
-
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.access_control_activity);
@@ -76,22 +76,22 @@ public class MainActivity extends Activity {
 		beaconManager = new BeaconManager(this);
 		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(10), 0);
-
+    beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(10), 0);
+		
 		if (!beaconManager.isBluetoothEnabled()) {
 			alertbox("Alert", "Please, activate your bluetooth");
 		}
-
+		
 		beaconManager.setMonitoringListener(new MonitoringListener() {
 			@Override
 			public void onEnteredRegion(Region region, List<Beacon> arg1) {
 				if (isAppInForeground(getApplicationContext())) {
 					Toast.makeText(getApplicationContext(), "Entered region",
 							Toast.LENGTH_LONG).show();
-
+				
 					TextView txtAccessControl = (TextView)findViewById(R.id.txtAccessControl);
 					txtAccessControl.setText("Dear " + userID + "\r\n\r\nWelcome to our store!");
-
+					
 					// ---range for beacons---
 					try {
 						beaconManager.startRanging(ALL_ESTIMOTE_BEACONS);
@@ -107,13 +107,13 @@ public class MainActivity extends Activity {
 			public void onExitedRegion(Region region) {
 				/*Reset	this flag, when enter region again and it is "IMMEDIATE"
 				 * it sends again to the cloud a message*/
-
+				
 				flagRegion = 0; 
-
+				
 				if (isAppInForeground(getApplicationContext())) {
 					Toast.makeText(getApplicationContext(), "Exited region",
 							Toast.LENGTH_LONG).show();
-
+					
 					TextView txtAccessControl = (TextView)findViewById(R.id.txtAccessControl);
 					txtAccessControl.setText("See you next time!");
 				} 
@@ -126,11 +126,11 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
-		
 		// ---called when beacons are found---
 		beaconManager.setRangingListener(new BeaconManager.RangingListener() {
 			@Override
-			public void onBeaconsDiscovered(Region region, final List<Beacon> beacons) {
+			public void onBeaconsDiscovered(Region region,
+					final List<Beacon> beacons) {
 				Log.d(TAG, "Ranged beacons: " + beacons);
 
 				runOnUiThread(new Runnable() {
@@ -138,17 +138,26 @@ public class MainActivity extends Activity {
 					public void run() {
 						if (beacons.size() > 0) {
 							Beacon iBeacon1 = null;
-
+							
 							// iBeacon---
 							iBeacon1 = beacons.get(0);
-
-							if(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(iBeacon1))) == "IMMEDIATE" && flagRegion == 0){
+				
+							if(String.valueOf(Utils.
+									proximityFromAccuracy(Utils.
+											computeAccuracy(iBeacon1))) == "IMMEDIATE" 
+									&& flagRegion == 0){
+								
 								flagRegion++;
 								postNotification(userID + ", you got 30% OFF on this polo!");
 							}
-							if(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(iBeacon1))) == "IMMEDIATE"){
+							if(String.valueOf(Utils.
+									proximityFromAccuracy(Utils.
+											computeAccuracy(iBeacon1))) == "IMMEDIATE"){
+											  
 								selectProduct( iBeacon1.getMinor() );
+								
 							}
+						
 						} 
 					}
 				});
@@ -189,44 +198,44 @@ public class MainActivity extends Activity {
 		PendingIntent pendingIntent = PendingIntent.getActivities(
 				MainActivity.this, 0, new Intent[] { notifyIntent },
 				PendingIntent.FLAG_UPDATE_CURRENT);
-
+		
 		Notification notification = new Notification.Builder(MainActivity.this)
-		.setSmallIcon(R.drawable.polo)
-		.setContentTitle("Lacoste Beacon App").setContentText(msg)
-		.setAutoCancel(true).setContentIntent(pendingIntent).build();
+				.setSmallIcon(R.drawable.polo)
+				.setContentTitle("Lacoste Beacon App").setContentText(msg)
+				.setAutoCancel(true).setContentIntent(pendingIntent).build();
 		notification.defaults |= Notification.DEFAULT_SOUND;
 		notification.defaults |= Notification.DEFAULT_LIGHTS;
 		notificationManager.notify(NOTIFICATION_ID, notification);
 	}
 
 	private void selectProduct(int Minor){
-
-		switch(Minor) {
-
-		case 16770:
-			setProduct("polo1", "SANGHON KIM JERSEY FOR LACOSTE L!VE");
-			break;
-		case 3801:
-			setProduct("polo2", "SANGHON KIM POLO FOR LACOSTE L!VE");
-			break;
-		case 12968:
-			setProduct("polo3", "SANGHON KIM TEE-SHIRT FOR LACOSTE L!VE");
-			break;
-		default:
-			setProduct("polo1", "SANGHON KIM JERSEY FOR LACOSTE L!VE");
-		}
-	}
-
+	  
+	   switch(Minor) {
+	     
+      case 16770:
+        setProduct("polo1", "SANGHON KIM JERSEY FOR LACOSTE L!VE");
+        break;
+      case 3801:
+        setProduct("polo2", "SANGHON KIM POLO FOR LACOSTE L!VE");
+       break;
+      case 12968:
+        setProduct("polo3", "SANGHON KIM TEE-SHIRT FOR LACOSTE L!VE");
+        break;
+      default:
+        setProduct("polo1", "SANGHON KIM JERSEY FOR LACOSTE L!VE");
+    }
+  }
+	
 	private void setProduct(String productPicURL, String productName){
-
-		TextView txtAccessControl = (TextView)findViewById(R.id.txtAccessControl);
-		txtAccessControl.setText(productName);
-
-		ImageView imageView = (ImageView) findViewById(R.id.productPic);
-		imageView.setImageResource(getResources().getIdentifier(productPicURL, "drawable", getPackageName()));
-	}
-
-
+		
+	  TextView txtAccessControl = (TextView)findViewById(R.id.txtAccessControl);
+	  txtAccessControl.setText(productName);
+    
+    ImageView imageView = (ImageView) findViewById(R.id.productPic);
+    imageView.setImageResource(getResources().getIdentifier(productPicURL, "drawable", getPackageName()));
+  }
+	
+		
 	// ---helper method to determine if the app is in
 	// the foreground---
 	public static boolean isAppInForeground(Context context) {
@@ -241,17 +250,17 @@ public class MainActivity extends Activity {
 
 	public void alertbox(String title, String mymessage) {
 		new AlertDialog.Builder(this)
-		.setMessage(mymessage)
-		.setTitle(title)
-		.setCancelable(true)
-		.setNeutralButton(android.R.string.ok,
-				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog,
-					int whichButton) {
-				// ((AlertDialog)dialog).getButton(whichButton).setVisibility(View.INVISIBLE);
-				finish();
-			}
-		}).show();
+				.setMessage(mymessage)
+				.setTitle(title)
+				.setCancelable(true)
+				.setNeutralButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								// ((AlertDialog)dialog).getButton(whichButton).setVisibility(View.INVISIBLE);
+								finish();
+							}
+						}).show();
 	}
 
 	@Override

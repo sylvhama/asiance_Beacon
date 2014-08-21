@@ -3,6 +3,7 @@
     <color name="white">#FFFFFF</color>
     <color name="textEditBackground">#cfe3e1</color>
     <color name="actionBarBackground">#f3f3f3</color>
+    <color name="actionBarText">#696969</color>
     <color name="actionBarBorder">#ffffff</color>
     <color name="list_text_color">#ffffff</color>
     <color name="background">#ffffff</color>

@@ -22,7 +22,7 @@
         android:allowBackup="true"
         android:icon="@drawable/asiance_windmill"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name" >
@@ -32,33 +32,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--
-        <activity
+        <!-- <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
-        </activity>
-        -->
-
-        <activity
-            android:name=".StampActivity"
-            android:label="@string/title_activity_stamp"
-            android:parentActivityName=".LoginActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.beacon_dot.LoginActivity" />
-        </activity>
+        </activity> -->
 
         <service
             android:name="com.estimote.sdk.service.BeaconService"
             android:exported="false" />
 
+        <!-- <activity
+            android:name=".StampActivity"
+            android:label="@string/title_activity_stamp"
+            android:screenOrientation="portrait" >
+        </activity> -->
+        <activity
+            android:name=".RuleActivity"
+            android:label="@string/title_activity_rule" >
+        </activity>
         <activity
             android:name=".FactActivity"
             android:label="@string/title_activity_fact" >
         </activity>
         <activity
-            android:name=".RuleActivity"
-            android:label="@string/title_activity_rule" >
+            android:name=".StampNewActivity"
+            android:label="@string/title_activity_stamp_new" >
         </activity>
     </application>
 

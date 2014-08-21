@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -22,5 +22,6 @@
     <!-- ActionBar styles -->
     <style name="ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
 	   <item name="android:background">@color/actionBarBackground</item>
+	   <item name="android:textColor">@color/actionBarText</item>
 	</style>
 </resources>
