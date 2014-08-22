@@ -1,7 +1,7 @@
 package com.example.beacon_dot;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -9,20 +9,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 // to do: 자료를 저장하면서 계속 살아있는 activity 상태롤 만들어야 함.
 public class StampNewActivity extends Activity {
 
+	private static final int REQUEST_CODE = 300;
 	private String name = null;
-	private FactData factData;
-
-//	int[] btnID = {
-//			R.id.stamp1, R.id.stamp2, R.id.stamp3, R.id.stamp4, R.id.stamp5, R.id.stamp6 
-//	};
-
+	ArrayList<Button> btnList = new ArrayList<Button>();
+	Button btnFact = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,35 +48,61 @@ public class StampNewActivity extends Activity {
 		TextView textView = (TextView) findViewById(R.id.stamp_welcome);
 		textView.setText(message);
 		
-		
+		// create layout to add buttons
 		List<Fact> facts = new FactData().getFacts();
-		LinearLayout layout1 = (LinearLayout) findViewById(R.id.row1Layout);
-		LinearLayout layout2 = (LinearLayout) findViewById(R.id.row2Layout);
-		LinearLayout layout3 = (LinearLayout) findViewById(R.id.row3Layout);
+		
+		TableRow row1 = (TableRow) findViewById(R.id.row1);
+		TableRow row2 = (TableRow) findViewById(R.id.row2);
+		TableRow row3 = (TableRow) findViewById(R.id.row3);
 		
 		// create button view and add on click listener for each button
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 6; i++) {
 			final Fact fact = facts.get(i);
 			Button btnFact = new Button(this);
+			btnFact.setBackgroundResource(R.drawable.button_effect);
 			btnFact.setText(fact.factTitle);
-			layout1.addView(btnFact);
+			btnFact.setId(i);
+			btnFact.setEnabled(true);
+			btnList.add(btnFact);
+			
+			if (i < 2) {
+				row1.addView(btnFact);
+			} else if (i >= 2 && i < 4){
+				row2.addView(btnFact);
+			} else if (i < 6) {
+				row3.addView(btnFact);
+			}
+			
 			
 			btnFact.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(StampNewActivity.this, FactActivity.class);
+					intent.putExtra("factBtnID", fact.id);
 					intent.putExtra("factTitle", fact.factTitle);
 					intent.putExtra("factImage", fact.image);
 					intent.putExtra("factDetail", fact.factDetail);
-					startActivity(intent);
+					intent.putExtra("factQuiz", fact.factQuiz);
+					intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
+					startActivityForResult(intent, REQUEST_CODE);
 				}
 					
 			});
 
 		}
-		
-		
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+			int ID = data.getIntExtra("factBtnID", 0);
+			System.out.println("returned id "+ID);
+			System.out.println("button "+ btnList.get(data.getIntExtra("factBtnID", 0)) + " on");
+			// combine this code with beacon ranging function so that each button perform depends on certain condition
+			btnList.get(data.getIntExtra("factBtnID", 0)).setEnabled(false);
+		}
 		
 	}
 

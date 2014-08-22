@@ -18,9 +18,8 @@
         \n\n3. Hang around with people and visit all over the office and rooftop.
         \n\n4. When your phone notice you, enjoy the article and tweet it. You will see letter was filled up in the stamp page after tweet.
         \n\n5. Did you fill all the letters? Excitement is expecting you.</string>
-    <string name="button_fact1">FACT1</string>
+    <string name="btn_answer">Right or Wrong</string>
     <string name="title_activity_fact">Fact</string>
     <string name="title_activity_stamp_new">Stamp!</string>
-    <string name="hello_world">Hello world!</string>
 
 </resources>
