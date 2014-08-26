@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stamp_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center_horizontal"
@@ -16,10 +17,10 @@
         android:layout_marginBottom="25dp"
         android:textSize="25sp" />
 
-    <TableLayout
+    <!-- <TableLayout
         android:id="@+id/stamp_table"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_gravity="center_horizontal"
         android:stretchColumns="*" >
 
@@ -27,8 +28,7 @@
             android:id="@+id/row1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:gravity="center_horizontal"
-            android:padding="5dp" >
+            android:gravity="center_horizontal" >
 
         </TableRow>
 
@@ -36,8 +36,7 @@
             android:id="@+id/row2"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:gravity="center_horizontal"
-            android:padding="5dp" >
+            android:gravity="center_horizontal" >
 
         </TableRow>
 
@@ -45,10 +44,9 @@
             android:id="@+id/row3"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:gravity="center_horizontal"
-            android:padding="5dp" >
+            android:gravity="center_horizontal" >
 
         </TableRow>
-    </TableLayout>
+    </TableLayout> -->
 
 </LinearLayout>

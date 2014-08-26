@@ -2,10 +2,12 @@ package com.example.beacon_dot;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,17 +19,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class FactActivity extends Activity {
-	
-	int btnID;
+
+	Integer btnID = null;
 	String factAnswer;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fact);
-		
-//		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
+		//fix screen shape to portrait
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+		//		getActionBar().setDisplayHomeAsUpEnabled(true);
+
 		// ========= get fact data from intent
 		Intent intent = getIntent();
 		String factTitle = intent.getStringExtra("factTitle");
@@ -38,22 +43,25 @@ public class FactActivity extends Activity {
 		factAnswer = answer; 
 		int factBtnID = intent.getIntExtra("factBtnID", 0);
 		btnID = factBtnID;
-		System.out.println("ID from stamp: "+btnID);
-		
+		Boolean rightAnswer = intent.getBooleanExtra("rightAnswer", false);
+		//		System.out.println("ID from stamp: "+btnID);
+
 		// ========= create views then write data
 		TextView txtView = (TextView) findViewById(R.id.fact_title);
 		txtView.setText(factTitle);
-		
+
 		txtView = (TextView) findViewById(R.id.fact_detail);
 		txtView.setMovementMethod(new ScrollingMovementMethod());
 		txtView.setText(factDetail);
-		
+
 		ImageView imgView = (ImageView) findViewById(R.id.fact_image);
 		imgView.setImageResource(factImage);
-		
+
+
+
 		txtView = (TextView) findViewById(R.id.fact_quiz);
 		txtView.setText(factQuiz);
-		
+
 		final EditText editText = (EditText) findViewById(R.id.fact_answer);
 		// define max input length
 		editText.addTextChangedListener(new TextWatcher() {
@@ -61,12 +69,12 @@ public class FactActivity extends Activity {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 			}
-			
+
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 				previous = s.toString();
 			}
-			
+
 			@Override
 			public void afterTextChanged(Editable s) {
 				if(editText.getLineCount() > 1) {
@@ -75,31 +83,46 @@ public class FactActivity extends Activity {
 				}
 			}
 		});
-		
-		
-			
-		
+
 		// put listener on the button
 		Button btn = (Button) findViewById(R.id.btn_answer);
-		
+
 		btn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {				
 				String answer = editText.getText().toString();
 				if (answer.equalsIgnoreCase(factAnswer)) {
-//					String correct = "true";
+					//						String correct = "true";
 					Intent intent = new Intent(FactActivity.this, StampNewActivity.class);
-//					intent.putExtra("correct", correct);
+					//						intent.putExtra("correct", correct);
 					intent.putExtra("factBtnID", btnID);
+					intent.putExtra("rightAnswer", true);
 					setResult(RESULT_OK, intent);
 					finish();
 				} else {
-					Toast.makeText(FactActivity.this, "Ooops, try again~", Toast.LENGTH_LONG).show();
+					Toast.makeText(FactActivity.this, "Ooops, try again~", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
+		
+		// make invisible if user already put right answer
+		if (rightAnswer == true) {
+			findViewById(R.id.fact_quiz).setVisibility(View.INVISIBLE);
+			findViewById(R.id.fact_answer).setVisibility(View.INVISIBLE);
+			findViewById(R.id.btn_answer).setVisibility(View.INVISIBLE);
+		}
 	}
+
+	//block back button
+	//	@Override
+	//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	//		switch (keyCode) {
+	//		case KeyEvent.KEYCODE_BACK:
+	//			return true;
+	//		}
+	//		return super.onKeyDown(keyCode, event);
+	//	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

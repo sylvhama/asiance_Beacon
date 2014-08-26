@@ -15,29 +15,37 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/asianceLogo"
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:adjustViewBounds="true"
-                android:background="@color/background2"
-                android:scaleType="fitXY"
-                android:src="@drawable/asiance_logo_big" />
+                android:orientation="vertical" >
 
-            <TextView
+                <ImageView
+                    android:id="@+id/asianceLogo"
+                    android:layout_width="300dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="0.97"
+                    android:adjustViewBounds="true"
+                    android:background="@color/background2"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/asiance10th_website_mobile_v3" />
+            </LinearLayout>
+            <!--
+                 <TextView
                 android:id="@+id/anniversary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="80dp"
                 android:text="@string/anniversary"
                 android:textSize="20sp" />
+            -->
 
             <EditText
                 android:id="@+id/inputName"
-                android:layout_width="250dp"
+                android:layout_width="214dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginTop="10dp"
@@ -55,7 +63,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/nice_button"
                 android:text="@string/_welcome_"
                 android:textColor="@android:color/white"
