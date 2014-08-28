@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onExitedRegion(Region region) {
-				/*Reset	this closeFlag, when enter region again and it is "IMMEDIATE"
+				/*Reset	this closeActivityFlag, when enter region again and it is "IMMEDIATE"
 				 * it sends again to the cloud a message*/
 				
 				flagRegion = 0; 

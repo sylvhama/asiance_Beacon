@@ -39,7 +39,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// to do: 자료를 저장하면서 계속 살아있는 activity 상태롤 만들어야 함.
 public class StampNewActivity extends Activity {
 
 	/*Insert here the UUID of your beacon
@@ -47,7 +46,6 @@ public class StampNewActivity extends Activity {
 	 */
 	//	ActionMode mActionMode = null;
 	//	public static final String CLASS_NAME = "StampNewActivity";
-	int detection1=0, detection2=0, detection3=0;
 	final String ESTIMOTE_PROXIMITY_UUID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 	final Region ALL_ESTIMOTE_BEACONS = new Region("CreativeRoom", ESTIMOTE_PROXIMITY_UUID, null, null);
 	protected static final String TAG = "EstimoteiBeacon";
@@ -61,12 +59,11 @@ public class StampNewActivity extends Activity {
 	private String name = null;
 	ArrayList<Button> btnList = new ArrayList<Button>();
 	Button btnFact = null;
-	int closeFlag = 0;
-	boolean answered = false;
+	int closeActivityFlag = 0;
 
 	// create layout to add buttons
 	List<Fact> facts = new FactData().getFacts();
-
+	Fact fact = new Fact();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +72,11 @@ public class StampNewActivity extends Activity {
 
 		//=========== beacon manager 
 		beaconManager = new BeaconManager(this);
-		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		//===========
+		//=========== beacon manager
 
-		//fix screen shape to portrait
+		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+		// fix screen shape to portrait
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		// handling user name
@@ -100,15 +98,9 @@ public class StampNewActivity extends Activity {
 
 		LinearLayout layout = (LinearLayout) findViewById(R.id.stamp_layout);
 
-
-		final LinearLayout factLayout = (LinearLayout) findViewById(R.id.fact_layout);
-		final TextView factQuizText = (TextView) findViewById(R.id.fact_quiz);
-		final EditText factQuizEdit = (EditText) findViewById(R.id.fact_answer);
-		final Button factQuizBtn = (Button) findViewById(R.id.btn_answer);
-
 		// create button view and add on click listener for each button
-		for (int i = 0; i < 6; i++) {
-			final Fact fact = facts.get(i);
+		for (int i = 0; i < 3; i++) {
+			fact = facts.get(i);
 			final Button btnFact = new Button(this);
 			btnFact.setBackgroundResource(R.drawable.button_effect);
 			btnFact.setText(fact.factTitle);
@@ -126,26 +118,19 @@ public class StampNewActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(StampNewActivity.this, FactActivity.class);
-					intent.putExtra("factBtnID", fact.id);
-					intent.putExtra("factTitle", fact.factTitle);
-					intent.putExtra("factImage", fact.image);
-					intent.putExtra("factDetail", fact.factDetail);
-					intent.putExtra("factQuiz", fact.factQuiz);
-					intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
-					intent.putExtra("rightAnswer", fact.rightAnswer);
-					startActivityForResult(intent, REQUEST_CODE);
-
+					// stop ranging service before activity launched
+					try {
+						beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS);
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+					// method to create FactActivity when user push the button
+					createFactActivityByButton(btnFact);
 				}
-
 			});
-
 		}
 
-		//=========================
-		//set scanning action for beacon manager
-
-
+		//========================= set scanning action for beacon manager
 		beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(3), 0);
 
 		// check bluetooth function is on or not
@@ -161,8 +146,9 @@ public class StampNewActivity extends Activity {
 				if (flagRegion < 1) {
 					Toast.makeText(getApplicationContext(), "In the zone, let's find quizzes", Toast.LENGTH_LONG).show();
 				}
-				//					TextView txtAccessControl = (TextView)findViewById(R.id.txtAccessControl);
-				//					txtAccessControl.setText("Dear " + name + "\r\n\r\nWelcome to our store!");
+				// by Adrian
+				// TextView txtAccessControl = (TextView)findViewById(R.id.txtAccessControl);
+				// txtAccessControl.setText("Dear " + name + "\r\n\r\nWelcome to our store!");
 
 				// ---range for beacons---
 				try {
@@ -175,7 +161,7 @@ public class StampNewActivity extends Activity {
 			// ---stop ranging for beacons---
 			@Override
 			public void onExitedRegion(Region arg0) {
-				/*Reset	this closeFlag, when enter region again and it is "IMMEDIATE" it sends again to the cloud a message*/
+				/*Reset	this closeActivityFlag, when enter region again and it is "IMMEDIATE" it sends again to the cloud a message*/
 				flagRegion = 0; 
 				Toast.makeText(getApplicationContext(), "Out of the zone, see you next time!", Toast.LENGTH_LONG).show();
 
@@ -184,49 +170,50 @@ public class StampNewActivity extends Activity {
 				} catch (RemoteException e) {
 					Log.e(TAG, e.getLocalizedMessage());
 				}
-
-
 			}
 		});
-
-
 
 		beaconManager.setRangingListener(new RangingListener() {
 
 			@Override
 			public void onBeaconsDiscovered(Region arg0, List<Beacon> beacons) {
+				Log.i(TAG, "Ranged beacons: " + beacons);
 				if (beacons != null && !beacons.isEmpty()) {
 					Beacon beacon = beacons.get(0);
-					//					if(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))) == "IMMEDIATE" && flagRegion == 0) {
-					//						flagRegion++;
-					//						postNotification(name + ", this beacon is notified");
-					//					}
+					if(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))) == "IMMEDIATE" && flagRegion == 0) {
+						flagRegion++;
+						postNotification(name + ", this beacon is notified");
+					}
+					
+					// generate LogCat message to see beacon detection status
+					Log.i(TAG, beacon.getMinor()+" FactID(RangingListener): "+facts.get(0)+"-"+facts.get(0).isRightAnswer());
+					Log.i(TAG, beacon.getMinor()+" FactID(RangingListener): "+facts.get(1)+"-"+facts.get(1).isRightAnswer());
+					Log.i(TAG, beacon.getMinor()+" FactID(RangingListener): "+facts.get(2)+"-"+facts.get(2).isRightAnswer());
 
 					if(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))) == "IMMEDIATE") {
-						selectQuiz( beacon.getMinor() );
+						try {
+							beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS);
+							selectQuiz( beacon.getMinor() );
+						} catch (RemoteException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
 		});
-		//=========================
+		//========================= set scanning action for beacon manager
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-			//			int ID = data.getIntExtra("factBtnID", 0);
-			//			System.out.println("returned id "+ID);
-			//			System.out.println("button "+ btnList.get(data.getIntExtra("factBtnID", 0)) + " on");
 
-			// combine this code with beacon ranging function so that each button perform depends on certain condition
+			// if user entered correct answer at FactActivity, corresponding button will be enabled 
 			btnList.get(data.getIntExtra("factBtnID", 0)).setEnabled(true);
-			Fact fact = facts.get(data.getIntExtra("factBtnID", 0));
-			fact.setRightAnswer(true);
-
-
+			facts.get(data.getIntExtra("factBtnID", 0)).setRightAnswer(true);
+			Log.i(TAG, "FactID: "+facts.get(data.getIntExtra("factBtnID", 0))+"-"+facts.get(data.getIntExtra("factBtnID", 0)).isRightAnswer());
 		}
-
 	}
 
 
@@ -235,9 +222,9 @@ public class StampNewActivity extends Activity {
 
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
-			if (closeFlag < 1) {
-				Toast.makeText(this, "Push again to close this app", Toast.LENGTH_LONG).show();
-				closeFlag ++;
+			if (closeActivityFlag < 1) {
+				Toast.makeText(this, "Push again to close this app", Toast.LENGTH_SHORT).show();
+				closeActivityFlag ++;
 				return true;
 			} else {
 				return super.onKeyDown(keyCode, event);
@@ -263,7 +250,6 @@ public class StampNewActivity extends Activity {
 		Intent intent = new Intent(StampNewActivity.this, RuleActivity.class);
 		intent.putExtra("userName", name);
 		startActivity(intent);
-
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -291,65 +277,49 @@ public class StampNewActivity extends Activity {
 		beaconManager.disconnect();
 	}
 
-	//method to select quiz depends on each beacon
-	private void selectQuiz(int Minor){
+	//method for binding quiz and beacon
+	private void selectQuiz(int Minor ) throws RemoteException{
+
+		//double check to stop ranging service
+		beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS);
+
 		Intent intent = new Intent(StampNewActivity.this, FactActivity.class);
-		List<Fact> facts = new FactData().getFacts();
-		Fact fact = null;
 		
+		// generate LogCat message to see rightAnswer flag has been set properly 
+		Log.i(TAG, "FactID(selectQuiz): "+facts.get(0)+"-"+facts.get(0).isRightAnswer());
+		Log.i(TAG, "FactID(selectQuiz): "+facts.get(1)+"-"+facts.get(1).isRightAnswer());
+		Log.i(TAG, "FactID(selectQuiz): "+facts.get(2)+"-"+facts.get(2).isRightAnswer());
+		
+		// add extra data and start activity with intent		
 		switch(Minor) {
-
 		case 16770:
-			// add intent and start that intent to start proper activity
-			//			Toast.makeText(this, Minor + " beacon detected", Toast.LENGTH_SHORT).show();
-
-			if (detection1 < 1) {
-				fact = facts.get(0);
-				intent.putExtra("factBtnID", fact.id);
-				intent.putExtra("factTitle", fact.factTitle);
-				intent.putExtra("factImage", fact.image);
-				intent.putExtra("factDetail", fact.factDetail);
-				intent.putExtra("factQuiz", fact.factQuiz);
-				intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
-				detection1 ++;
-				startActivityForResult(intent, REQUEST_CODE);
-			}
-
+			createFactActivityByBeacon(intent,0,Minor);
 			break;
 		case 3801:
-			// add intent and start that intent to start proper activity
-			//			Toast.makeText(this, Minor + " beacon detected", Toast.LENGTH_SHORT).show();
-			if (detection2 < 1) {
-				fact = facts.get(1);
-				intent.putExtra("factBtnID", fact.id);
-				intent.putExtra("factTitle", fact.factTitle);
-				intent.putExtra("factImage", fact.image);
-				intent.putExtra("factDetail", fact.factDetail);
-				intent.putExtra("factQuiz", fact.factQuiz);
-				intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
-				detection2 ++;
-				startActivityForResult(intent, REQUEST_CODE);
-			}
+			createFactActivityByBeacon(intent,1,Minor);
 			break;
 		case 12968:
-			// add intent and start that intent to start proper activity
-			//			Toast.makeText(this, Minor + " beacon detected", Toast.LENGTH_SHORT).show();
-			if (detection3 < 1) {
-				fact = facts.get(2);
-				intent.putExtra("factBtnID", fact.id);
-				intent.putExtra("factTitle", fact.factTitle);
-				intent.putExtra("factImage", fact.image);
-				intent.putExtra("factDetail", fact.factDetail);
-				intent.putExtra("factQuiz", fact.factQuiz);
-				intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
-				detection3++;
-				startActivityForResult(intent, REQUEST_CODE);
-			}
+			createFactActivityByBeacon(intent,2,Minor);
 			break;
-		default:
-			//consider default action if needed
+//		default:
 		}
 
+	}
+
+	private void createFactActivityByBeacon(Intent intent, int factID, int Minor) {
+		Toast.makeText(this, Minor + " beacon detected", Toast.LENGTH_SHORT).show();
+		fact = facts.get(factID);
+		if (fact.isRightAnswer() == false) {
+			intent.putExtra("factBtnID", fact.id);
+			intent.putExtra("factTitle", fact.factTitle);
+			intent.putExtra("factImage", fact.image);
+			intent.putExtra("factDetail", fact.factDetail);
+			intent.putExtra("factQuiz", fact.factQuiz);
+			intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
+			startActivityForResult(intent, REQUEST_CODE);
+		} else {
+			Toast.makeText(this, fact.factTitle+" quiz has been solved", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private void postNotification(String msg) {
@@ -388,6 +358,21 @@ public class StampNewActivity extends Activity {
 				finish();
 			}
 		}).show();
+	}
+
+	private void createFactActivityByButton(final Button btnFact) {
+		// each button's ID is the same value with their index number in facts list 
+		fact = facts.get(btnFact.getId());
+		btnFact.setText(fact.factTitle);
+		Intent intent = new Intent(StampNewActivity.this, FactActivity.class);
+		intent.putExtra("factBtnID", fact.id);
+		intent.putExtra("factTitle", fact.factTitle);
+		intent.putExtra("factImage", fact.image);
+		intent.putExtra("factDetail", fact.factDetail);
+		intent.putExtra("factQuiz", fact.factQuiz);
+		intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
+		intent.putExtra("rightAnswer", fact.rightAnswer);
+		startActivityForResult(intent, REQUEST_CODE);
 	}
 
 

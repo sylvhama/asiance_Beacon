@@ -29,7 +29,7 @@
                     android:adjustViewBounds="true"
                     android:background="@color/background2"
                     android:scaleType="fitXY"
-                    android:src="@drawable/asiance10th_website_mobile_v3" />
+                    android:src="@drawable/asiance_logo_big" />
             </LinearLayout>
             <!--
                  <TextView

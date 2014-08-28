@@ -9,6 +9,8 @@ public class Fact {
 	public String factQuizAnswer;
 	public boolean rightAnswer;
 	
+	public Fact () {}
+	
 	public Fact(int id, String factTitle, int image, String factDetail, String factQuiz, String factQuizAnswer, boolean rightAnswer) {
 		this.id = id;
 		this.factTitle = factTitle;
