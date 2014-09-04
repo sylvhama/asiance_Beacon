@@ -3,6 +3,8 @@ package com.example.beacon_dot;
 
 
 
+import java.util.concurrent.ExecutionException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
  
 	public final static String EXTRA_NAME = "com.example.beacon_dot.NAME";
+	public final static String EXTRA_ID = "com.example.beacon_dot.ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class LoginActivity extends Activity {
                    toastMassage();
                 } else {
                 	//send user input name to stamp activity
-                	sendName(view, username);
+                	addUser(view, username);
                 }
             }			
         });
@@ -52,11 +55,28 @@ public class LoginActivity extends Activity {
 		startActivity(myIntent);
 	}*/
     
-    public void sendName(View view, String username) {
+    public void sendName(View view, String username, String id) {
 		Intent intent = new Intent(this, StampNewActivity.class);
 		intent.putExtra(EXTRA_NAME, username);
+		intent.putExtra(EXTRA_ID, id);
 		startActivity(intent);
-		LoginActivity.this.finish();
-		
+		LoginActivity.this.finish();		
 	}
+    
+    public void addUser(View view, String username) {
+    	RequestTask r = new RequestTask();
+        String res = "Nothing";
+  		try {
+  			res = r.execute("addUser", username).get();
+  		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			res = "InterruptedException";
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			res = "ExecutionException";
+			e.printStackTrace();
+		}
+  		sendName(view, username, res);
+    }
 } 

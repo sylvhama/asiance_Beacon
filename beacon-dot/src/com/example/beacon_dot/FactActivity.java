@@ -1,5 +1,7 @@
 package com.example.beacon_dot;
 
+import java.util.concurrent.ExecutionException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -93,13 +95,7 @@ public class FactActivity extends Activity {
 			public void onClick(View v) {				
 				String answer = editText.getText().toString();
 				if (answer.equalsIgnoreCase(factAnswer)) {
-					//						String correct = "true";
-					Intent intent = new Intent(FactActivity.this, StampNewActivity.class);
-					//						intent.putExtra("correct", correct);
-					intent.putExtra("factBtnID", btnID);
-					intent.putExtra("rightAnswer", true);
-					setResult(RESULT_OK, intent);
-					finish();
+					addAnswer();
 				} else {
 					Toast.makeText(FactActivity.this, "Ooops, try again~", Toast.LENGTH_SHORT).show();
 				}
@@ -112,6 +108,32 @@ public class FactActivity extends Activity {
 			findViewById(R.id.fact_answer).setVisibility(View.INVISIBLE);
 			findViewById(R.id.btn_answer).setVisibility(View.INVISIBLE);
 		}
+	}
+	
+	public void addAnswer() {
+		RequestTask r = new RequestTask();
+        String res = "Nothing";
+        String question = Integer.toString(btnID);
+        Intent intentGetter = getIntent();
+		String id = intentGetter.getStringExtra("id_user");
+  		try {
+  			res = r.execute("addAnswer", id, question).get();
+  		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			res = "InterruptedException";
+			e.printStackTrace();
+			Toast.makeText(FactActivity.this, res, Toast.LENGTH_SHORT).show();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			res = "ExecutionException";
+			e.printStackTrace();
+			Toast.makeText(FactActivity.this, res, Toast.LENGTH_SHORT).show();
+		}
+		Intent intent = new Intent(FactActivity.this, StampNewActivity.class);
+		intent.putExtra("factBtnID", btnID);
+		intent.putExtra("rightAnswer", true);
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 
 	//block back button

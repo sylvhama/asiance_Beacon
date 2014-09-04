@@ -19,7 +19,7 @@ public class FactData {
 		addItem(new Fact(0, "Fact_adobe", R.drawable.fact_adobe, 
 				"As a cross-cultural company, we work in English, French, Korean, Japanese, and Chinese. Our clients can therefore rest assured that their projects will not be affected by the language and culture barriers all too often associated with doing business in Asia. Asiance will see your project through from inception to completion.", 
 				"Fact quiz 1", "asiance", false));
-		addItem(new Fact(1, "Fact_airplain", R.drawable.fact_airplain, 
+		addItem(new Fact(1, "Fact_airplane", R.drawable.fact_airplain, 
 				"As a cross-cultural company, we work in English, French, Korean, Japanese, and Chinese. Our clients can therefore rest assured that their projects will not be affected by the language and culture barriers all too often associated with doing business in Asia. Asiance will see your project through from inception to completion.", 
 				"Fact quiz 2", "asiance", false));
 		addItem(new Fact(2, "Fact_award", R.drawable.fact_award, 

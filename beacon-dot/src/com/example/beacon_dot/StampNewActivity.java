@@ -50,6 +50,7 @@ public class StampNewActivity extends Activity {
 	final Region ALL_ESTIMOTE_BEACONS = new Region("CreativeRoom", ESTIMOTE_PROXIMITY_UUID, null, null);
 	protected static final String TAG = "EstimoteiBeacon";
 	private static final int NOTIFICATION_ID = 123;
+	private static String ID_USER;
 	public int flagRegion = 0;
 	BeaconManager beaconManager=null;
 	NotificationManager notificationManager = null;
@@ -82,6 +83,7 @@ public class StampNewActivity extends Activity {
 		// handling user name
 		Intent intent = getIntent();
 		String loginName = intent.getStringExtra(LoginActivity.EXTRA_NAME);		
+		ID_USER = intent.getStringExtra(LoginActivity.EXTRA_ID);	
 		String ruleName = intent.getStringExtra(RuleActivity.EXTRA_NAME_RULE);
 		String message = null;
 
@@ -316,6 +318,7 @@ public class StampNewActivity extends Activity {
 			intent.putExtra("factDetail", fact.factDetail);
 			intent.putExtra("factQuiz", fact.factQuiz);
 			intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
+			intent.putExtra("id_user", ID_USER);
 			startActivityForResult(intent, REQUEST_CODE);
 		} else {
 			Toast.makeText(this, fact.factTitle+" quiz has been solved", Toast.LENGTH_SHORT).show();
@@ -372,6 +375,7 @@ public class StampNewActivity extends Activity {
 		intent.putExtra("factQuiz", fact.factQuiz);
 		intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
 		intent.putExtra("rightAnswer", fact.rightAnswer);
+		intent.putExtra("id_user", ID_USER);
 		startActivityForResult(intent, REQUEST_CODE);
 	}
 
