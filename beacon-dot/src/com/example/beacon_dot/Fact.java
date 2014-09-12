@@ -5,19 +5,21 @@ public class Fact {
 	public String factTitle;
 	public int image;
 	public String factDetail;
-	public String factQuiz;
-	public String factQuizAnswer;
+	public String answer;
+	public String factQuizAnswer1;
+	public String factQuizAnswer2;
 	public boolean rightAnswer;
 	
 	public Fact () {}
 	
-	public Fact(int id, String factTitle, int image, String factDetail, String factQuiz, String factQuizAnswer, boolean rightAnswer) {
+	public Fact(int id, String factTitle, int image, String factDetail, String answer, String factQuizAnswer1, String factQuizAnswer2, boolean rightAnswer) {
 		this.id = id;
 		this.factTitle = factTitle;
 		this.image = image;
 		this.factDetail = factDetail;
-		this.factQuiz = factQuiz;
-		this.factQuizAnswer = factQuizAnswer;
+		this.answer = answer;
+		this.factQuizAnswer1 = factQuizAnswer1;
+		this.factQuizAnswer2 = factQuizAnswer2;
 		this.rightAnswer = rightAnswer;
 	}
 	
@@ -60,10 +62,10 @@ public class Fact {
 
 
 	/**
-	 * @return the factQuiz
+	 * @return the factAnswer
 	 */
-	public String getFactQuiz() {
-		return factQuiz;
+	public String getAnswer() {
+		return answer;
 	}
 
 
@@ -71,8 +73,17 @@ public class Fact {
 	/**
 	 * @return the factQuizAnswer
 	 */
-	public String getFactQuizAnswer() {
-		return factQuizAnswer;
+	public String getFactQuizAnswer1() {
+		return factQuizAnswer1;
+	}
+
+
+
+	/**
+	 * @return the factQuizAnswer
+	 */
+	public String getFactQuizAnswer2() {
+		return factQuizAnswer2;
 	}
 
 
@@ -123,17 +134,24 @@ public class Fact {
 	}
 
 	/**
-	 * @param factQuiz the factQuiz to set
+	 * @param answer the answer to set
 	 */
-	public void setFactQuiz(String factQuiz) {
-		this.factQuiz = factQuiz;
+	public void setAnswer(String answer) {
+		this.answer = answer;
 	}
 
 	/**
 	 * @param factQuizAnswer the factQuizAnswer to set
 	 */
-	public void setFactQuizAnswer(String factQuizAnswer) {
-		this.factQuizAnswer = factQuizAnswer;
+	public void setFactQuizAnswer1(String factQuizAnswer1) {
+		this.factQuizAnswer1 = factQuizAnswer1;
+	}
+
+	/**
+	 * @param factQuizAnswer the factQuizAnswer to set
+	 */
+	public void setFactQuizAnswer2(String factQuizAnswer2) {
+		this.factQuizAnswer2 = factQuizAnswer2;
 	}
 
 	/**

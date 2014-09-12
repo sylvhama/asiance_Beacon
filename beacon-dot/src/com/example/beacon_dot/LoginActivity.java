@@ -45,7 +45,7 @@ public class LoginActivity extends Activity {
     }
     
     public void toastMassage () {
-    	Toast msg = Toast.makeText(this, "Please enter your name again", Toast.LENGTH_LONG);
+    	Toast msg = Toast.makeText(this, "Please enter your informations", Toast.LENGTH_LONG);
     	msg.show();
     }
     

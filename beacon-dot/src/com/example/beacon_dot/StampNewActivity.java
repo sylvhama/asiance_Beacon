@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.drm.DrmStore.RightsStatus;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
@@ -85,17 +86,10 @@ public class StampNewActivity extends Activity {
 		String loginName = intent.getStringExtra(LoginActivity.EXTRA_NAME);		
 		ID_USER = intent.getStringExtra(LoginActivity.EXTRA_ID);	
 		String ruleName = intent.getStringExtra(RuleActivity.EXTRA_NAME_RULE);
-		String message = null;
-
-		if (loginName.isEmpty()) {
-			name = ruleName;
-			message = "Welcome, " + ruleName + " !";
-		} else {
-			name = loginName;
-			message = "Welcome, " + loginName + " !";
-		}
+		String message = "Find one of those places!";
 
 		TextView textView = (TextView) findViewById(R.id.stamp_welcome);
+		textView.setTextSize(20);
 		textView.setText(message);
 
 		LinearLayout layout = (LinearLayout) findViewById(R.id.stamp_layout);
@@ -104,11 +98,12 @@ public class StampNewActivity extends Activity {
 		for (int i = 0; i < 3; i++) {
 			fact = facts.get(i);
 			final Button btnFact = new Button(this);
-			btnFact.setBackgroundResource(R.drawable.button_effect);
+			btnFact.setBackgroundResource(R.drawable.button_asiance);
 			btnFact.setText(fact.factTitle);
 			btnFact.setId(i);
 			btnFact.setWidth(70);
 			btnFact.setEnabled(false);
+			btnFact.setTextColor(Color.parseColor("white"));
 			btnList.add(btnFact);
 
 			layout.addView(btnFact);
@@ -181,7 +176,8 @@ public class StampNewActivity extends Activity {
 			public void onBeaconsDiscovered(Region arg0, List<Beacon> beacons) {
 				Log.i(TAG, "Ranged beacons: " + beacons);
 				if (beacons != null && !beacons.isEmpty()) {
-					Beacon beacon = beacons.get(0);
+					Beacon beacon = beacons.get(0);										
+					
 					if(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))) == "IMMEDIATE" && flagRegion == 0) {
 						flagRegion++;
 						postNotification(name + ", this beacon is notified");
@@ -191,6 +187,10 @@ public class StampNewActivity extends Activity {
 					Log.i(TAG, beacon.getMinor()+" FactID(RangingListener): "+facts.get(0)+"-"+facts.get(0).isRightAnswer());
 					Log.i(TAG, beacon.getMinor()+" FactID(RangingListener): "+facts.get(1)+"-"+facts.get(1).isRightAnswer());
 					Log.i(TAG, beacon.getMinor()+" FactID(RangingListener): "+facts.get(2)+"-"+facts.get(2).isRightAnswer());
+					
+					for (int i = 0; i < beacons.size(); i++) {
+						changeColor(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacons.get(i)))), btnList.get(i), facts.get(i).isRightAnswer());
+					}	
 
 					if(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))) == "IMMEDIATE") {
 						try {
@@ -204,6 +204,25 @@ public class StampNewActivity extends Activity {
 			}
 		});
 		//========================= set scanning action for beacon manager
+	}
+	
+	private void changeColor(String distance, Button btn, boolean answer) {
+		if (!answer) {
+			if (distance == "UNKNOWN") {
+				btn.setBackgroundResource(R.drawable.button_asiance);
+			}
+			else if (distance == "IMMEDIATE") {
+				btn.setBackgroundResource(R.drawable.button_green);
+			}
+			else if (distance == "NEAR") {
+				btn.setBackgroundResource(R.drawable.button_yellow);
+			}
+			else if (distance == "FAR") {
+				btn.setBackgroundResource(R.drawable.button_red);
+			}	
+		} else {
+			btn.setBackgroundResource(R.drawable.button_asiance);
+		}
 	}
 
 	@Override
@@ -316,8 +335,9 @@ public class StampNewActivity extends Activity {
 			intent.putExtra("factTitle", fact.factTitle);
 			intent.putExtra("factImage", fact.image);
 			intent.putExtra("factDetail", fact.factDetail);
-			intent.putExtra("factQuiz", fact.factQuiz);
-			intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
+			intent.putExtra("factAnswer", fact.answer);
+			intent.putExtra("factQuizAnswer1", fact.factQuizAnswer1);
+			intent.putExtra("factQuizAnswer2", fact.factQuizAnswer2);
 			intent.putExtra("id_user", ID_USER);
 			startActivityForResult(intent, REQUEST_CODE);
 		} else {
@@ -372,8 +392,9 @@ public class StampNewActivity extends Activity {
 		intent.putExtra("factTitle", fact.factTitle);
 		intent.putExtra("factImage", fact.image);
 		intent.putExtra("factDetail", fact.factDetail);
-		intent.putExtra("factQuiz", fact.factQuiz);
-		intent.putExtra("factQuizAnswer", fact.factQuizAnswer);
+		intent.putExtra("factAnswer", fact.answer);
+		intent.putExtra("factQuizAnswer1", fact.factQuizAnswer1);
+		intent.putExtra("factQuizAnswer2", fact.factQuizAnswer2);
 		intent.putExtra("rightAnswer", fact.rightAnswer);
 		intent.putExtra("id_user", ID_USER);
 		startActivityForResult(intent, REQUEST_CODE);

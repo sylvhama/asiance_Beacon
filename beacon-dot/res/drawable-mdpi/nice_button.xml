@@ -4,15 +4,12 @@
 
     <item android:state_pressed="true" >
         <shape>
-            <gradient
-               android:endColor="@color/NiceButtonStartColor"
-               android:startColor="@color/NiceButtonEndColor"
-               android:angle="270" />
+            <solid android:color="#a63049" />
             <stroke
                android:width="1dp"
                android:color="@color/NiceButtonBorderColor" />
             <corners
-               android:radius="60dp" />
+               android:radius="4dp" />
             <padding
                android:left="0dp"
                android:top="10dp"
@@ -23,15 +20,12 @@
 
     <item android:state_focused="true" >
         <shape>
-            <gradient
-               android:startColor="@color/NiceButtonStartColor"
-               android:endColor="@color/NiceButtonEndColor"
-               android:angle="270" />
+            <solid android:color="@color/asianceColor" />
             <stroke
                android:width="1dp"
                android:color="@color/NiceButtonBorderColor" />
             <corners
-               android:radius="60dp" />
+               android:radius="4dp" />
             <padding
                android:left="0dp"
                android:top="10dp"
@@ -42,15 +36,12 @@
 
     <item android:state_enabled="false">
             <shape>
-            <gradient
-               android:startColor="@color/NiceButtonDisabledStartColor"
-               android:endColor="@color/NiceButtonDisabledEndColor"
-               android:angle="270" />
+            <solid android:color="@color/asianceColor" />
             <stroke
                android:width="1dp"
                android:color="@color/NiceButtonBorderColor" />
             <corners
-               android:radius="60dp" />
+               android:radius="4dp" />
             <padding
                android:left="0dp"
                android:top="10dp"
@@ -61,15 +52,12 @@
 
     <item>        
         <shape>
-            <gradient
-               android:startColor="@color/NiceButtonStartColor"
-               android:endColor="@color/NiceButtonEndColor"
-               android:angle="270" />
+            <solid android:color="@color/asianceColor" />
             <stroke
                android:width="1dp"
                android:color="@color/NiceButtonBorderColor" />
             <corners
-               android:radius="60dp" />
+               android:radius="4dp" />
             <padding
                android:left="0dp"
                android:top="10dp"

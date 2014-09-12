@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ASIANCE 10th ANNIVERSARY</string>
+    <string name="app_name">Asiance 10th Anniversary</string>
     <string name="action_settings">Settings</string>
     <string name="action_stamp">Stamp</string>
-    <string name="action_rule">Rule</string>
-    <string name="_welcome_"><b>Welcome</b></string>
+    <string name="action_rule">Rules</string>
+    <string name="_welcome_"><b>Start</b></string>
     <string name="anniversary">10th ANNIVERSARY</string>
-    <string name="enter_name">Enter your name here</string>
-    <string name="empty_name">Please enter your name again</string>
-    <string name="title_activity_stamp">Stamp!</string>
-    <string name="title_activity_rule">Rule</string>
+    <string name="enter_name">Enter your name and company</string>
+    <string name="empty_name">Please enter your informations again</string>
+    <string name="title_activity_stamp">Asiance 10th Anniversary</string>
+    <string name="title_activity_rule">Rules</string>
     <string name="rule_title">How to play</string>
-    <string name="rule_enjoy">Enjoy</string>
-    <string name="rule_detail">1. Activate Bluetooth function first.
-        \n\n2. Launch Asiance application.
-        \n\n3. Hang around with people and visit all over the office and rooftop.
-        \n\n4. When your phone notice you, enjoy the article and tweet it. You will see letter was filled up in the stamp page after tweet.
-        \n\n5. Did you fill all the letters? Excitement is expecting you.</string>
-    <string name="btn_answer">Right or Wrong</string>
+    <string name="rule_enjoy"></string>
+    <string name="rule_detail">1. Activate Bluetooth function.
+        \n\n2. Find one of the three places from the list.
+        \n\n3. Answer to the question..
+        \n\n4. Wait the lucky draw!</string>
     <string name="title_activity_fact">Fact</string>
-    <string name="title_activity_stamp_new">Stamp!</string>
+    <string name="title_activity_stamp_new">Asiance 10th Anniversary</string>
 
 </resources>

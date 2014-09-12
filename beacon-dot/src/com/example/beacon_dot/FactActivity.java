@@ -38,11 +38,11 @@ public class FactActivity extends Activity {
 		// ========= get fact data from intent
 		Intent intent = getIntent();
 		String factTitle = intent.getStringExtra("factTitle");
-		int factImage = intent.getIntExtra("factImage", 0);
 		String factDetail = intent.getStringExtra("factDetail");
-		String factQuiz = intent.getStringExtra("factQuiz");
-		String answer = intent.getStringExtra("factQuizAnswer");
+		String answer = intent.getStringExtra("factAnswer");
 		factAnswer = answer; 
+		final String userAnswer1 = intent.getStringExtra("factQuizAnswer1");
+		final String userAnswer2 = intent.getStringExtra("factQuizAnswer2");
 		int factBtnID = intent.getIntExtra("factBtnID", 0);
 		btnID = factBtnID;
 		Boolean rightAnswer = intent.getBooleanExtra("rightAnswer", false);
@@ -56,45 +56,16 @@ public class FactActivity extends Activity {
 		txtView.setMovementMethod(new ScrollingMovementMethod());
 		txtView.setText(factDetail);
 
-		ImageView imgView = (ImageView) findViewById(R.id.fact_image);
-		imgView.setImageResource(factImage);
+		// put listener on the button		
+		Button btn1 = (Button) findViewById(R.id.btn_answer1);
+		btn1.setText(userAnswer1);
+		Button btn2 = (Button) findViewById(R.id.btn_answer2);
+		btn2.setText(userAnswer2);
 
-
-
-		txtView = (TextView) findViewById(R.id.fact_quiz);
-		txtView.setText(factQuiz);
-
-		final EditText editText = (EditText) findViewById(R.id.fact_answer);
-		// define max input length
-		editText.addTextChangedListener(new TextWatcher() {
-			String previous = "";
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				previous = s.toString();
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				if(editText.getLineCount() > 1) {
-					editText.setText(previous);
-					editText.setSelection(editText.length());
-				}
-			}
-		});
-
-		// put listener on the button
-		Button btn = (Button) findViewById(R.id.btn_answer);
-
-		btn.setOnClickListener(new OnClickListener() {
-
+		btn1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {				
-				String answer = editText.getText().toString();
-				if (answer.equalsIgnoreCase(factAnswer)) {
+				if (userAnswer1.equalsIgnoreCase(factAnswer)) {
 					addAnswer();
 				} else {
 					Toast.makeText(FactActivity.this, "Ooops, try again~", Toast.LENGTH_SHORT).show();
@@ -102,11 +73,23 @@ public class FactActivity extends Activity {
 			}
 		});
 		
+		btn2.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {				
+				if (userAnswer2.equalsIgnoreCase(factAnswer)) {
+					Toast.makeText(FactActivity.this, "Right!", Toast.LENGTH_SHORT).show();
+					addAnswer();
+				} else {
+					Toast.makeText(FactActivity.this, "Ooops, try again!", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		
 		// make invisible if user already put right answer
 		if (rightAnswer == true) {
-			findViewById(R.id.fact_quiz).setVisibility(View.INVISIBLE);
-			findViewById(R.id.fact_answer).setVisibility(View.INVISIBLE);
-			findViewById(R.id.btn_answer).setVisibility(View.INVISIBLE);
+			findViewById(R.id.btn_answer1).setVisibility(View.INVISIBLE);
+			findViewById(R.id.btn_answer2).setVisibility(View.INVISIBLE);
+			txtView.setText(factDetail + " " + answer);
 		}
 	}
 	
