@@ -3,6 +3,7 @@ package com.example.beacon_dot;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,10 @@ public class FactActivity extends Activity {
 
 	Integer btnID = null;
 	String factAnswer;
+	private Button btn1;
+	private Button btn2;
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +63,16 @@ public class FactActivity extends Activity {
 		txtView.setText(factDetail);
 
 		// put listener on the button		
-		Button btn1 = (Button) findViewById(R.id.btn_answer1);
+		btn1 = (Button) findViewById(R.id.btn_answer1);
 		btn1.setText(userAnswer1);
-		Button btn2 = (Button) findViewById(R.id.btn_answer2);
+		btn2 = (Button) findViewById(R.id.btn_answer2);
 		btn2.setText(userAnswer2);
 
 		btn1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {				
 				if (userAnswer1.equalsIgnoreCase(factAnswer)) {
-					addAnswer();
+					addAnswer(v);
 				} else {
 					Toast.makeText(FactActivity.this, "Ooops, try again~", Toast.LENGTH_SHORT).show();
 				}
@@ -78,7 +84,7 @@ public class FactActivity extends Activity {
 			public void onClick(View v) {				
 				if (userAnswer2.equalsIgnoreCase(factAnswer)) {
 					Toast.makeText(FactActivity.this, "Right!", Toast.LENGTH_SHORT).show();
-					addAnswer();
+					addAnswer(v);
 				} else {
 					Toast.makeText(FactActivity.this, "Ooops, try again!", Toast.LENGTH_SHORT).show();
 				}
@@ -93,30 +99,12 @@ public class FactActivity extends Activity {
 		}
 	}
 	
-	public void addAnswer() {
-		RequestTask r = new RequestTask();
-        String res = "Nothing";
+	public void addAnswer(View v) {
+		RequestTask r = new RequestTask(this);
         String question = Integer.toString(btnID);
         Intent intentGetter = getIntent();
 		String id = intentGetter.getStringExtra("id_user");
-  		try {
-  			res = r.execute("addAnswer", id, question).get();
-  		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			res = "InterruptedException";
-			e.printStackTrace();
-			Toast.makeText(FactActivity.this, res, Toast.LENGTH_SHORT).show();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			res = "ExecutionException";
-			e.printStackTrace();
-			Toast.makeText(FactActivity.this, res, Toast.LENGTH_SHORT).show();
-		}
-		Intent intent = new Intent(FactActivity.this, StampNewActivity.class);
-		intent.putExtra("factBtnID", btnID);
-		intent.putExtra("rightAnswer", true);
-		setResult(RESULT_OK, intent);
-		finish();
+		r.execute("addAnswer", id, question);		
 	}
 
 	//block back button
@@ -146,5 +134,13 @@ public class FactActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void afterHttp() {
+		Intent intent = new Intent(FactActivity.this, StampNewActivity.class);
+		intent.putExtra("factBtnID", btnID);
+		intent.putExtra("rightAnswer", true);
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 }

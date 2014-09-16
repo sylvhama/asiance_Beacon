@@ -140,9 +140,9 @@ public class StampNewActivity extends Activity {
 
 			@Override
 			public void onEnteredRegion(Region arg0, List<Beacon> arg1) {
-				if (flagRegion < 1) {
-					Toast.makeText(getApplicationContext(), "In the zone, let's find quizzes", Toast.LENGTH_LONG).show();
-				}
+				//if (flagRegion < 1) {
+					//Toast.makeText(getApplicationContext(), "In the zone, let's find quizzes", Toast.LENGTH_LONG).show();
+				//}
 				// by Adrian
 				// TextView txtAccessControl = (TextView)findViewById(R.id.txtAccessControl);
 				// txtAccessControl.setText("Dear " + name + "\r\n\r\nWelcome to our store!");
@@ -160,13 +160,16 @@ public class StampNewActivity extends Activity {
 			public void onExitedRegion(Region arg0) {
 				/*Reset	this closeActivityFlag, when enter region again and it is "IMMEDIATE" it sends again to the cloud a message*/
 				flagRegion = 0; 
-				Toast.makeText(getApplicationContext(), "Out of the zone, see you next time!", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "Out of the zone, you are too far!", Toast.LENGTH_LONG).show();
+				changeColor("UNKNOWN", btnList.get(0), facts.get(0).isRightAnswer());
+				changeColor("UNKNOWN", btnList.get(1), facts.get(1).isRightAnswer());
+				changeColor("UNKNOWN", btnList.get(2), facts.get(2).isRightAnswer());
 
-				try {
-					beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS);
-				} catch (RemoteException e) {
-					Log.e(TAG, e.getLocalizedMessage());
-				}
+				//try {
+					//beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS);
+				//} catch (RemoteException e) {
+					//Log.e(TAG, e.getLocalizedMessage());
+				//}
 			}
 		});
 
@@ -188,9 +191,31 @@ public class StampNewActivity extends Activity {
 					Log.i(TAG, beacon.getMinor()+" FactID(RangingListener): "+facts.get(1)+"-"+facts.get(1).isRightAnswer());
 					Log.i(TAG, beacon.getMinor()+" FactID(RangingListener): "+facts.get(2)+"-"+facts.get(2).isRightAnswer());
 					
-					for (int i = 0; i < beacons.size(); i++) {
-						changeColor(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacons.get(i)))), btnList.get(i), facts.get(i).isRightAnswer());
-					}	
+					//for (int i = 0; i < beacons.size(); i++) {
+					//	Log.i(TAG,"XLOL" + beacons.get(i).toString() + " BTN " + btnList.get(i).getText().toString() + " DISTANCE " + Utils.proximityFromAccuracy(Utils.computeAccuracy(beacons.get(i))));
+					//	changeColor(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacons.get(i)))), btnList.get(i), facts.get(i).isRightAnswer());
+					//}	
+					
+					switch(beacon.getMinor()) {
+					case 16770:
+						changeColor(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))), btnList.get(0), facts.get(0).isRightAnswer());
+						changeColor("UNKNOWN", btnList.get(1), facts.get(1).isRightAnswer());
+						changeColor("UNKNOWN", btnList.get(2), facts.get(2).isRightAnswer());
+						break;
+					case 3801:
+						changeColor(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))), btnList.get(1), facts.get(1).isRightAnswer());
+						changeColor("UNKNOWN", btnList.get(0), facts.get(0).isRightAnswer());
+						changeColor("UNKNOWN", btnList.get(2), facts.get(2).isRightAnswer());
+						break;
+					case 12968:
+						changeColor(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))), btnList.get(2), facts.get(2).isRightAnswer());
+						changeColor("UNKNOWN", btnList.get(0), facts.get(0).isRightAnswer());
+						changeColor("UNKNOWN", btnList.get(1), facts.get(1).isRightAnswer());
+						break;
+//					default:
+					}
+					
+					
 
 					if(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))) == "IMMEDIATE") {
 						try {
@@ -328,7 +353,7 @@ public class StampNewActivity extends Activity {
 	}
 
 	private void createFactActivityByBeacon(Intent intent, int factID, int Minor) {
-		Toast.makeText(this, Minor + " beacon detected", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, Minor + " beacon detected", Toast.LENGTH_SHORT).show();
 		fact = facts.get(factID);
 		if (fact.isRightAnswer() == false) {
 			intent.putExtra("factBtnID", fact.id);

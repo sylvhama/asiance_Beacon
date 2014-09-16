@@ -17,9 +17,41 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 
 class RequestTask extends AsyncTask<String, String, String>{
+	
+	private ProgressDialog progressDialog;
+	private LoginActivity la;
+	private FactActivity fa;
+	
+	public RequestTask(LoginActivity a) {
+		la = a;
+		fa = null;
+	}
+	
+	public RequestTask(FactActivity a) {
+		la = null;
+		fa = a;
+	}
+	
+	@Override
+    protected void onPreExecute() {
+		// instantiate new progress dialog
+		if(la != null) {
+			progressDialog = new ProgressDialog(la); 
+		}else if(fa != null) {
+			progressDialog = new ProgressDialog(fa); 
+		}	
+		// spinner (wheel) style dialog
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); 
+		// better yet - use a string resource getString(R.string.your_message)
+		progressDialog.setMessage("Loading..."); 
+		// display dialog
+		progressDialog.show(); 
+	}
 
     @Override
     protected String doInBackground(String... uri) {
@@ -57,10 +89,17 @@ class RequestTask extends AsyncTask<String, String, String>{
         return responseString;
         //return "ok";
     }
+    
+    
 
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        //Do anything with response..
+        progressDialog.dismiss(); 
+        if(la != null) {
+			la.afterHttp(result);
+		}else if(fa != null) {
+			fa.afterHttp();
+		}
     }
 }
