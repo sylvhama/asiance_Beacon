@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Asiance 10th Anniversary</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_stamp">Stamp</string>
-    <string name="action_rule">Rules</string>
-    <string name="_welcome_"><b>Start</b></string>
-    <string name="anniversary">10th ANNIVERSARY</string>
-    <string name="enter_name">Enter your name and company</string>
-    <string name="empty_name">Please enter your informations again</string>
-    <string name="title_activity_stamp">Asiance 10th Anniversary</string>
-    <string name="title_activity_rule">Rules</string>
-    <string name="rule_title">How to play</string>
-    <string name="rule_enjoy"></string>
-    <string name="rule_detail">1. Activate Bluetooth function.
+    <string name="app_name" translatable="false">Asiance 10th Anniversary</string>
+    <string name="action_settings"  translatable="false">Settings</string>
+    <string name="action_stamp"  translatable="false">Stamp</string>
+    <string name="action_rule"  translatable="false">Rules</string>
+    <string name="_welcome_"  translatable="false"><b>Start</b></string>
+    <string name="anniversary"  translatable="false">10th ANNIVERSARY</string>
+    <string name="enter_name"  translatable="false">Enter your name and company</string>
+    <string name="empty_name"  translatable="false">Please enter your informations again</string>
+    <string name="title_activity_stamp"  translatable="false">Asiance 10th Anniversary</string>
+    <string name="title_activity_rule"  translatable="false">Rules</string>
+    <string name="rule_title"  translatable="false">How to play</string>
+    <string name="rule_enjoy"  translatable="false"></string>
+    <string name="rule_detail"  translatable="false">1. Activate Bluetooth function.
         \n\n2. Find one of the three places from the list.
-        \n\n3. Answer to the question..
+        \n\n3. Answer to the question.
         \n\n4. Wait the lucky draw!</string>
-    <string name="title_activity_fact">Fact</string>
-    <string name="title_activity_stamp_new">Asiance 10th Anniversary</string>
+    <string name="title_activity_fact"  translatable="false">Fact</string>
+    <string name="title_activity_stamp_new"  translatable="false">Asiance 10th Anniversary</string>
 
 </resources>
