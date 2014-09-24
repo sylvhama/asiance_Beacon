@@ -16,13 +16,13 @@ public class FactData {
 	// fact object : String factTitle, int image, String factDetail, String factQuiz, String factQuizAnswer
 	public FactData() {
 		addItem(new Fact(0, "Foosball", R.drawable.babyfoot, 
-				"How many people worked at Asiance since 2004?", 
+				"How many people have worked at Asiance since 2004?", 
 				"150", "100", "150", false));
 		addItem(new Fact(1, "Photo Wall", R.drawable.photowall, 
-				"What means Asiance since 2004?", 
+				"What does Asiance mean?", 
 				"Asia + Alliance", "Asia + Maintenance", "Asia + Alliance", false));
 		addItem(new Fact(2, "Awards", R.drawable.awards, 
-				"How many Award did Asiance got since 2004?", 
+				"How many awards has Asiance received since 2004?", 
 				"14", "14", "10", false));
 		/*addItem(new Fact(3, "Fact_awards", R.drawable.fact_awards, 
 				"As a cross-cultural company, we work in English, French, Korean, Japanese, and Chinese. Our clients can therefore rest assured that their projects will not be affected by the language and culture barriers all too often associated with doing business in Asia. Asiance will see your project through from inception to completion.", 

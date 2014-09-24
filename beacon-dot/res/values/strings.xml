@@ -13,10 +13,10 @@
     <string name="title_activity_rule"  translatable="false">Rules</string>
     <string name="rule_title"  translatable="false">How to play</string>
     <string name="rule_enjoy"  translatable="false"></string>
-    <string name="rule_detail"  translatable="false">1. Activate Bluetooth function.
-        \n\n2. Find one of the three places from the list.
-        \n\n3. Answer to the question.
-        \n\n4. Wait the lucky draw!</string>
+    <string name="rule_detail"  translatable="false">1. Activate bluetooth on your device.
+        \n\n2. Find one of the three places on the list.
+        \n\n3. Answer the question.
+        \n\n4. Wait for the lucky draw!</string>
     <string name="title_activity_fact"  translatable="false">Fact</string>
     <string name="title_activity_stamp_new"  translatable="false">Asiance 10th Anniversary</string>
 

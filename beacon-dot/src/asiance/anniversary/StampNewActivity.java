@@ -47,6 +47,7 @@ public class StampNewActivity extends Activity {
 	private static final int NOTIFICATION_ID = 123;
 	private static String ID_USER;
 	public int flagRegion = 0;
+	public boolean factIsShowing = false;
 	BeaconManager beaconManager=null;
 	NotificationManager notificationManager = null;
 	// beacon part above
@@ -80,7 +81,7 @@ public class StampNewActivity extends Activity {
 		String loginName = intent.getStringExtra(LoginActivity.EXTRA_NAME);		
 		ID_USER = intent.getStringExtra(LoginActivity.EXTRA_ID);	
 		String ruleName = intent.getStringExtra(RuleActivity.EXTRA_NAME_RULE);
-		String message = "Find one of those places!";
+		String message = "Find one of these places!";
 
 		TextView textView = (TextView) findViewById(R.id.stamp_welcome);
 		textView.setTextSize(20);
@@ -104,6 +105,7 @@ public class StampNewActivity extends Activity {
 			LinearLayout.LayoutParams para = (LayoutParams) btnFact.getLayoutParams();
 			para.setMargins(55, 5, 55, 5);
 			btnFact.setLayoutParams(para);
+			
 
 			btnFact.setOnClickListener(new View.OnClickListener() {
 
@@ -120,9 +122,10 @@ public class StampNewActivity extends Activity {
 				}
 			});
 		}
-
+		
 		//========================= set scanning action for beacon manager
-		beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(3), 0);
+		long period = 5000;
+		beaconManager.setBackgroundScanPeriod(period, period);
 
 		// check bluetooth function is on or not
 		if (!beaconManager.isBluetoothEnabled()) {
@@ -154,7 +157,7 @@ public class StampNewActivity extends Activity {
 			public void onExitedRegion(Region arg0) {
 				/*Reset	this closeActivityFlag, when enter region again and it is "IMMEDIATE" it sends again to the cloud a message*/
 				flagRegion = 0; 
-				Toast.makeText(getApplicationContext(), "Out of the zone, you are too far!", Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(), "Out of the zone, you are too far!", Toast.LENGTH_LONG).show();
 				changeColor("UNKNOWN", btnList.get(0), facts.get(0).isRightAnswer());
 				changeColor("UNKNOWN", btnList.get(1), facts.get(1).isRightAnswer());
 				changeColor("UNKNOWN", btnList.get(2), facts.get(2).isRightAnswer());
@@ -211,8 +214,9 @@ public class StampNewActivity extends Activity {
 					
 					
 
-					if(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))) == "IMMEDIATE") {
+					if(String.valueOf(Utils.proximityFromAccuracy(Utils.computeAccuracy(beacon))) == "IMMEDIATE" && !factIsShowing) {
 						try {
+							factIsShowing = true;
 							beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS);
 							selectQuiz( beacon.getMinor() );
 						} catch (RemoteException e) {
@@ -246,9 +250,10 @@ public class StampNewActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		factIsShowing = false;
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-
+				
 			// if user entered correct answer at FactActivity, corresponding button will be enabled 
 			btnList.get(data.getIntExtra("factBtnID", 0)).setEnabled(true);
 			facts.get(data.getIntExtra("factBtnID", 0)).setRightAnswer(true);
